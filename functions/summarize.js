@@ -21,7 +21,7 @@ export default {
           const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: "POST",
             headers: {
-              "Authorization": `Bearer ${env.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}`,
+              "Authorization": `Bearer ${env.GROQ_API_KEY}`,
               "Content-Type": "application/json"
             },
             body: JSON.stringify({
@@ -200,20 +200,3 @@ export default {
       }
     });
   }
-}
-
- } catch (error) {
-      console.error('Worker error:', error);
-      return new Response(JSON.stringify({
-        error: error.message,
-        stack: error.stack
-      }), {
-        status: 500,
-        headers: { 
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        }
-      });
-    }
-  }
-}
