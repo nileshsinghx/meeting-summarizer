@@ -1,18 +1,52 @@
-async function generateSummary() {
+const API_URL = 'https://90ca4418-meeting-summarizer.nileshdotin.workers.dev/api/summarize';
+
+document.getElementById('generate-btn').addEventListener('click', async () => {
   const notes = document.getElementById('notes').value;
   const prompt = document.getElementById('prompt').value;
   
-const response = await fetch('/api/summarize', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ notes, prompt })
-});
-  const data = await response.json();
-  document.getElementById('summary').innerHTML = data.summary;
-}
+  if (!notes) {
+    alert('Please enter meeting notes');
+    return;
+  }
 
-function shareSummary() {
-  const emails = document.getElementById('email').value;
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ notes, prompt })
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to generate summary');
+    }
+    
+    const data = await response.json();
+    document.getElementById('summary').innerHTML = data.summary;
+  } catch (error) {
+    alert('Error: ' + error.message);
+    console.error(error);
+  }
+});
+
+document.getElementById('share-btn').addEventListener('click', () => {
+  const emails = document.getElementById('emails').value;
   const summary = document.getElementById('summary').innerText;
-  window.location.href = `mailto:${emails}?subject=Meeting Summary&body=${encodeURIComponent(summary)}`;
-}
+  
+  if (!emails) {
+    alert('Please enter recipient emails');
+    return;
+  }
+  
+  if (!summary) {
+    alert('Please generate a summary first');
+    return;
+  }
+  
+  const subject = 'Meeting Summary';
+  const body = `Here's the meeting summary:\n\n${summary}`;
+  const mailtoLink = `mailto:${emails}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  
+  window.location.href = mailtoLink;
+});
