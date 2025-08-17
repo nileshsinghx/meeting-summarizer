@@ -1,3 +1,6 @@
 name = "meeting-summarizer"
 compatibility_date = "2025-08-17"
 main = "functions/summarize.js"
+
+[vars]
+GROQ_API_KEY = "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"

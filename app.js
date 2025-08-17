@@ -2,11 +2,11 @@ async function generateSummary() {
   const notes = document.getElementById('notes').value;
   const prompt = document.getElementById('prompt').value;
   
-  const response = await fetch('/api/summarize', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ notes, prompt })
-  });
+const response = await fetch('/api/summarize', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ notes, prompt })
+});
   const data = await response.json();
   document.getElementById('summary').innerHTML = data.summary;
 }
